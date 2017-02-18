@@ -1,0 +1,121 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<title>Document</title>
+	<link rel="stylesheet" href="reset.min.css">
+	<link rel="stylesheet" href="dist/css/styles.css">
+</head>
+<body>
+	<div class="contianer">
+		<header class="cate-header">
+			<div class="icon icon-left">
+				<i></i>
+			</div>
+			<div class="h-center">
+				<h1>美食</h1>
+			</div>
+			<div class="icon icon-right">
+				<i></i>
+			</div>
+		</header>
+		<nav class="cate-nav" ng-app="navapp">
+			<span class="nav-list nav-one"  ui-sref="/cate">
+				美食
+				<i></i>
+			</span>
+			<span class="nav-list nav-two"  ui-sref="/sort">
+				排序
+				<i></i>
+			</span>
+			<span class="nav-list nav-three"  ui-sref="/filter">
+				筛选
+				<i></i>
+			</span>
+		</nav>
+		<div class="cate-main" ng-app="MyApp"  ng-controller="cateCtrl">
+			<section class="cate-section">
+				<div class="cate-dl" ng-repeat="info in data">
+					<div class="cate-dt">
+						<i></i>
+					</div>
+					<div class="cate-dd">
+						<div class="dd-one-line">
+							<div class="one-line-left">
+								<a href="javascript:;" class="pinP">品牌</a>
+								<h6 class="one-title">{{info.name}}</h6>
+							</div>
+							<div class="one-line-right">
+								<a href="javascript:;" class="word" ng-repeat="x in info.supports">{{x.icon_name}}</a>
+							</div>
+						</div>
+						<div class="dd-two-line">
+							<div class="two-line-left"><i></i><i></i><i></i><i></i><i></i><a href="javascript:;">4.5</a><span>就是打发5555地</span></div>
+							<div class="two-line-right">
+								<span class="zsd">{{info.supports[1].name}}</span><span class="fnzs">{{info.delivery_mode.text}}</span>
+							</div>
+						</div>
+						<div class="dd-three-line">
+							<div class="three-line-left">
+								<span class="qs">{{info.piecewise_agent_fee.rules[0].price | currency:"￥" }}元起送/</span><span class="ps">{{info.piecewise_agent_fee.description}}</span>
+							</div>
+							<div class="three-line-right">
+								<span class="mi">{{info.distance}}m/</span><span class="fen">45分钟</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+			
+
+		</div>
+		<footer class="cate-footer">
+			
+		</footer>
+		<div ui-view class="po">
+			<section class="lucency-section">
+				
+			</section>
+
+			<section class="fenlei-section top-section">
+				<div class="fenlei-left">
+					<div class="fenlei-list list-cate">
+						<p class="list-left">美食</p>
+						<p class="list-right">2000</p>
+					</div>
+					<div class="fenlei-list list-cate">
+						<p class="list-left">快餐便当</p>
+						<p class="list-right">2000</p>
+					</div>
+					<div class="fenlei-list list-cate">
+						<p class="list-left">特色菜系</p>
+						<p class="list-right">2000</p>
+					</div>
+					<div class="fenlei-list list-cate">
+						<p class="list-left">异国料理</p>
+						<p class="list-right">2000</p>
+					</div>
+					<div class="fenlei-list list-cate">
+						<p class="list-left">小吃夜宵</p>
+						<p class="list-right">2000</p>
+					</div>
+				</div>
+			</section>
+		</div>
+			
+			
+	</div>
+	<script src="src/angular.min.js"></script>
+	<script src="src/angular-ui-router.min.js"></script>
+	<script>
+		var app = angular.module( "MyApp",[] );
+			app.controller( "cateCtrl",function( $scope,$http ){
+				$http.get("restaurants.json")
+					.success(function(data){
+						$scope.data = data;
+				})
+			} )
+	</script>
+</body>
+</html>
