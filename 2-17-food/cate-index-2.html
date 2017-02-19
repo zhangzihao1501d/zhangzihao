@@ -1,5 +1,5 @@
 ﻿<!doctype html>
-<html lang="en">
+<html lang="en" ng-app="MyApp">
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
@@ -8,37 +8,31 @@
 	<link rel="stylesheet" href="dist/css/styles.css">
 </head>
 <body>
-	<div class="contianer">
+	<div class="contianer"  ng-controller="cateCtrl">
 		<header class="cate-header">
 			<div class="icon icon-left">
-				<i></i>
+				<img src="./src/images/pic_1.png" alt="">
 			</div>
 			<div class="h-center">
 				<h1>美食</h1>
 			</div>
-			<div class="icon icon-right">
-				<i></i>
-			</div>
 		</header>
-		<nav class="cate-nav" ng-app="navapp">
-			<span class="nav-list nav-one"  ui-sref="/cate">
+		<nav class="cate-nav">
+			<span class="nav-style"  ui-sref="home">
 				美食
-				<i></i>
 			</span>
-			<span class="nav-list nav-two"  ui-sref="/sort">
+			<span class="nav-style"  ui-sref="sort">
 				排序
-				<i></i>
 			</span>
-			<span class="nav-list nav-three"  ui-sref="/filter">
+			<span class="nav-style"  ui-sref="filter">
 				筛选
-				<i></i>
 			</span>
 		</nav>
-		<div class="cate-main" ng-app="MyApp"  ng-controller="cateCtrl">
+		<div class="cate-main">
 			<section class="cate-section">
 				<div class="cate-dl" ng-repeat="info in data">
 					<div class="cate-dt">
-						<i></i>
+						<img src="https://fuss10.elemecdn.com/{{info.image_path}}.jpeg" alt="">
 					</div>
 					<div class="cate-dd">
 						<div class="dd-one-line">
@@ -74,34 +68,9 @@
 			
 		</footer>
 		<div ui-view class="po">
-			<section class="lucency-section">
-				
-			</section>
+			
 
-			<section class="fenlei-section top-section">
-				<div class="fenlei-left">
-					<div class="fenlei-list list-cate">
-						<p class="list-left">美食</p>
-						<p class="list-right">2000</p>
-					</div>
-					<div class="fenlei-list list-cate">
-						<p class="list-left">快餐便当</p>
-						<p class="list-right">2000</p>
-					</div>
-					<div class="fenlei-list list-cate">
-						<p class="list-left">特色菜系</p>
-						<p class="list-right">2000</p>
-					</div>
-					<div class="fenlei-list list-cate">
-						<p class="list-left">异国料理</p>
-						<p class="list-right">2000</p>
-					</div>
-					<div class="fenlei-list list-cate">
-						<p class="list-left">小吃夜宵</p>
-						<p class="list-right">2000</p>
-					</div>
-				</div>
-			</section>
+
 		</div>
 			
 			
@@ -109,13 +78,51 @@
 	<script src="src/angular.min.js"></script>
 	<script src="src/angular-ui-router.min.js"></script>
 	<script>
-		var app = angular.module( "MyApp",[] );
-			app.controller( "cateCtrl",function( $scope,$http ){
-				$http.get("restaurants.json")
-					.success(function(data){
-						$scope.data = data;
-				})
-			} )
+		var app = angular.module( "MyApp",["ui.router"] );
+		app.config(function($stateProvider,$urlRouterProvider){
+			$urlRouterProvider.otherwise("home")
+			$stateProvider
+					.state( "home", {
+						url: "/",
+						template: "",
+						controller:"homePage",
+						resolve:{
+							getData:function($http){
+								return $http.get("restaurants.json")
+							}
+						}
+					})
+					.state("sort",{
+						url : "/sort",
+						templateUrl: "sort.html"
+					})
+					.state("filter",{
+						url : "/filter",
+						templateUrl: "filter.html"
+					})
+		});
+		app.controller("homePage",function($rootScope,getData){
+			$rootScope.data=getData.data;
+		})
+		app.controller( "cateCtrl",function( $scope,$http ){
+			$http.get("restaurants.json")
+				.success(function(data){
+					$scope.data = data;
+			})
+		} )
+		var nav_style = document.querySelectorAll(".cate-nav span");
+		for(var i=0; i<nav_style.length; i++){
+			nav_style[i].onclick = function(){
+				for(var j=0; j<nav_style.length; j++){
+					nav_style[j].className = "nav-style";
+				}
+				if(this.getAttribute("class") == "nav-style"){
+					this.className = "nav-list";
+				}else{
+					this.className = "nav-style";
+				}
+			}
+		}
 	</script>
 </body>
 </html>
